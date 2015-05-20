@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TradeMeTask</string>
+    <string name="title_listing_detail">Listing Detail</string>
+    <string name="check_internet">Check your Internet connection</string>
+</resources>

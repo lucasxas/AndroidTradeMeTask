@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="base_url">https://api.tmsandbox.co.nz/v1/</string>
+    <string name="search_endpoint">Search/General.json?category=%s&amp;rows=20</string>
+    <string name="category_endpoint">Categories.json?depth=2</string>
+    <string name="listing_detail_endpoint">Listings/%d.json</string>
+
+</resources>
