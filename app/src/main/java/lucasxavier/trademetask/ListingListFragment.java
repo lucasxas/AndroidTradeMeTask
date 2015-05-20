@@ -2,13 +2,21 @@ package lucasxavier.trademetask;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
+import java.util.List;
 
-import lucasxavier.trademetask.dummy.DummyContent;
+import lucasxavier.trademetask.adapter.ListingViewAdapter;
+import lucasxavier.trademetask.model.Listing;
+import lucasxavier.trademetask.view.RecyclerItemClickListener;
+import lucasxavier.trademetask.view.SpacesItemDecoration;
 
 /**
  * A list fragment representing a list of Listings. This fragment
@@ -19,13 +27,7 @@ import lucasxavier.trademetask.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class ListingListFragment extends ListFragment {
-
-    /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
-     */
-    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+public class ListingListFragment extends Fragment {
 
     /**
      * The fragment's current callback object, which is notified of list item
@@ -33,10 +35,9 @@ public class ListingListFragment extends ListFragment {
      */
     private Callbacks mCallbacks = sDummyCallbacks;
 
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
+    private List<Listing> listingList;
+    private RecyclerView recyclerView;
+    private ListingViewAdapter adapter;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -47,7 +48,7 @@ public class ListingListFragment extends ListFragment {
         /**
          * Callback for when an item has been selected.
          */
-        void onItemSelected(String id);
+        void onItemSelected(Integer id);
     }
 
     /**
@@ -56,9 +57,10 @@ public class ListingListFragment extends ListFragment {
      */
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(String id) {
+        public void onItemSelected(Integer id) {
         }
     };
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -67,27 +69,57 @@ public class ListingListFragment extends ListFragment {
     public ListingListFragment() {
     }
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_listing_list, container, false);
 
-        // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
-                getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
-    }
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        int itemsPerLine = 2;
+        final GridLayoutManager manager = new GridLayoutManager(getActivity(), itemsPerLine);
+        recyclerView.setLayoutManager(manager);
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_margin);
+        final SpacesItemDecoration itemDecoration = new SpacesItemDecoration(spacingInPixels, itemsPerLine);
+        recyclerView.addItemDecoration(itemDecoration);
 
-        // Restore the previously serialized activated item position.
-        if (savedInstanceState != null
-                && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+        ViewTreeObserver viewTreeObserver = recyclerView.getViewTreeObserver();
+        viewTreeObserver.addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
+            @Override
+            public void onDraw() {
+                int viewWidth = recyclerView.getMeasuredWidth();
+
+                int childWidth = recyclerView.getChildAt(0).getMeasuredWidth();
+
+                int newSpanCount = (int) Math.floor(viewWidth / childWidth);
+                if (newSpanCount <= 0) {
+                    newSpanCount = 1;
+                }
+
+                itemDecoration.setItemsPerLine(newSpanCount);
+
+                manager.setSpanCount(newSpanCount);
+                manager.requestLayout();
+            }
+        });
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int pos) {
+                if (listingList != null) {
+                    Listing listing = listingList.get(pos);
+
+                    mCallbacks.onItemSelected(listing.getId());
+                    adapter.setSelectedItem(pos);
+                }
+            }
+        }));
+
+        if (listingList != null) {
+            adapter = new ListingViewAdapter(listingList, 0);
+            recyclerView.setAdapter(adapter);
         }
+        return view;
     }
 
     @Override
@@ -110,43 +142,7 @@ public class ListingListFragment extends ListFragment {
         mCallbacks = sDummyCallbacks;
     }
 
-    @Override
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        super.onListItemClick(listView, view, position, id);
-
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
-        }
-    }
-
-    /**
-     * Turns on activate-on-click mode. When this mode is on, list items will be
-     * given the 'activated' state when touched.
-     */
-    public void setActivateOnItemClick(boolean activateOnItemClick) {
-        // When setting CHOICE_MODE_SINGLE, ListView will automatically
-        // give items the 'activated' state when touched.
-        getListView().setChoiceMode(activateOnItemClick
-                ? ListView.CHOICE_MODE_SINGLE
-                : ListView.CHOICE_MODE_NONE);
-    }
-
-    private void setActivatedPosition(int position) {
-        if (position == ListView.INVALID_POSITION) {
-            getListView().setItemChecked(mActivatedPosition, false);
-        } else {
-            getListView().setItemChecked(position, true);
-        }
-
-        mActivatedPosition = position;
+    public void setListingList(List<Listing> listingList) {
+        this.listingList = listingList;
     }
 }

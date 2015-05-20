@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="@dimen/view_category_item_size"
-    android:layout_height="@dimen/view_category_item_size"
+    android:layout_width="@dimen/view_listing_item_size"
+    android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
     android:background="?android:attr/selectableItemBackground">
@@ -13,27 +14,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
+        android:padding="@dimen/padding_item"
         android:elevation="@dimen/elevation"
-        android:padding="16dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/category_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:maxLines="3"
-            android:ellipsize="end"
-            tools:text="Business, farming &amp; industry"/>
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/picture"
+            android:layout_width="@dimen/image_size"
+            android:layout_height="@dimen/image_size" />
 
         <TextView
-            android:layout_marginTop="12dp"
-            android:id="@+id/category_summary"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="3"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
             android:ellipsize="end"
-            tools:text="Aircraft, Boats &amp; marine, Buses, Car parts &amp; accessories, Car stereos "/>
+            tools:text="Exploding Blueberry"/>
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="$100.00"/>
 
     </LinearLayout>
 

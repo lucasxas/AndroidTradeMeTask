@@ -1,9 +1,7 @@
 package lucasxavier.trademetask;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.MenuItem;
 
 
 /**
@@ -35,8 +33,8 @@ public class ListingDetailActivity extends FragmentActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(ListingDetailFragment.ARG_ITEM_ID,
-                    getIntent().getStringExtra(ListingDetailFragment.ARG_ITEM_ID));
+            arguments.putInt(ListingDetailFragment.ARG_LISTING_ID,
+                    getIntent().getIntExtra(ListingDetailFragment.ARG_LISTING_ID, 0));
             ListingDetailFragment fragment = new ListingDetailFragment();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
@@ -45,19 +43,4 @@ public class ListingDetailActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            navigateUpTo(new Intent(this, ListingListActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }
