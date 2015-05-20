@@ -87,7 +87,7 @@ public class CategoryListActivity extends Activity {
                 new Response.Listener<Category>() {
                     @Override
                     public void onResponse(Category response) {
-                        loading.setVisibility(View.INVISIBLE);
+                        loading.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                         categoryList = response.getSubcategories();
                         recyclerView.setAdapter(new CategoryViewAdapter(categoryList));
