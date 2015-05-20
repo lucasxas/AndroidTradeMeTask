@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -97,6 +98,7 @@ public class ListingListActivity extends FragmentActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loading.setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), R.string.check_internet, Toast.LENGTH_LONG).show();
                     }
                 });
 
