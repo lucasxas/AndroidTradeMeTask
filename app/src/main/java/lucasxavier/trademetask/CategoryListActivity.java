@@ -70,7 +70,6 @@ public class CategoryListActivity extends Activity {
                 Intent intent = new Intent(CategoryListActivity.this, ListingListActivity.class);
                 intent.putExtra(ListingListActivity.CATEGORY_ARG, category);
                 startActivity(intent);
-//                Toast.makeText(getApplicationContext(), category.getName(), Toast.LENGTH_LONG).show();
             }
         }));
 
