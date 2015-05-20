@@ -20,7 +20,7 @@ public class CurrencyJsonAdapter extends TypeAdapter<BigDecimal> {
     public BigDecimal read(JsonReader in) throws IOException {
         String nextString = in.nextString();
         String currency = nextString.length() > 0 ? nextString.substring(1).split(" ")[0] : "";
-        String regularExpression = "^[0-9,\\.]+$";
+        String regularExpression = "^[0-9\\.]+$";
         return currency.matches(regularExpression) ? new BigDecimal(currency) : BigDecimal.ZERO;
     }
 }
