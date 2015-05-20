@@ -6,4 +6,5 @@
     <dimen name="image_size">100dp</dimen>
     <dimen name="padding_item">16dp</dimen>
     <dimen name="elevation">4dp</dimen>
+    <dimen name="margin_text">8dp</dimen>
 </resources>
