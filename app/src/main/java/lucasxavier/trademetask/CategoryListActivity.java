@@ -40,29 +40,6 @@ public class CategoryListActivity extends Activity {
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_margin);
         final SpacesItemDecoration itemDecoration = new SpacesItemDecoration(spacingInPixels, itemsPerLine);
         recyclerView.addItemDecoration(itemDecoration);
-
-        ViewTreeObserver viewTreeObserver = recyclerView.getViewTreeObserver();
-        viewTreeObserver.addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
-            @Override
-            public void onDraw() {
-                int viewWidth = recyclerView.getMeasuredWidth();
-
-                int childWidth = recyclerView.getChildAt(0).getMeasuredWidth();
-
-                int newSpanCount = (int) Math.floor(viewWidth / childWidth);
-                if (newSpanCount <= 0) {
-                    newSpanCount = 1;
-                }
-
-                itemDecoration.setItemsPerLine(newSpanCount);
-
-                manager.setSpanCount(newSpanCount);
-                manager.requestLayout();
-            }
-        });
-
-        loading = findViewById(R.id.loading);
-
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int pos) {
@@ -72,6 +49,8 @@ public class CategoryListActivity extends Activity {
                 startActivity(intent);
             }
         }));
+
+        loading = findViewById(R.id.loading);
 
         getCategories();
     }
