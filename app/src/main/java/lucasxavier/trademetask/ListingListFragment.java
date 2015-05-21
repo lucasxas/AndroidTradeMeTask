@@ -89,6 +89,7 @@ public class ListingListFragment extends Fragment {
 
                     mCallbacks.onItemSelected(listing.getId());
                     adapter.setSelectedItem(pos);
+                    adapter.notifyDataSetChanged();
                 }
             }
         }));

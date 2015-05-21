@@ -30,7 +30,7 @@ public class ListingViewAdapter extends RecyclerView.Adapter<ListingViewHolder> 
 
     @Override
     public void onBindViewHolder(ListingViewHolder holder, int position) {
-        holder.bind(listingList.get(position));
+        holder.bind(listingList.get(position), selectedItem == position);
     }
 
     @Override

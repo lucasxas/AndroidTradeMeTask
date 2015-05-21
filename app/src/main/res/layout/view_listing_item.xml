@@ -5,15 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="@dimen/view_listing_item_size"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:padding="@dimen/padding_item"
         android:elevation="@dimen/elevation"
         android:orientation="vertical">

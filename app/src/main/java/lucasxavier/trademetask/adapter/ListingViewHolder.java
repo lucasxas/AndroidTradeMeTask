@@ -26,12 +26,19 @@ public class ListingViewHolder extends RecyclerView.ViewHolder {
         price = (TextView) itemView.findViewById(R.id.price);
     }
 
-    public void bind(Listing listing) {
+    public void bind(Listing listing, boolean isSelected) {
         Context context = itemView.getContext();
         ImageLoader imageLoader = RequestSingleton.getInstance(context).getImageLoader();
 
         picture.setImageUrl(listing.getPictureHref(), imageLoader);
         title.setText(listing.getTitle());
         price.setText(String.format("%.2f", listing.getPriceDisplay().floatValue()));
+
+        if (isSelected) {
+            itemView.setBackgroundColor(context.getResources().getColor(android.R.color.darker_gray));
+        } else {
+            itemView.setBackgroundColor(context.getResources().getColor(android.R.color.white));
+        }
+
     }
 }
