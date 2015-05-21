@@ -92,6 +92,11 @@ public class ListingListActivity extends FragmentActivity
                                 .replace(R.id.listing_list_container, fragment)
                                 .commit();
 
+                        if (mTwoPane && listings.size() > 0) {
+                            Listing listing = listings.get(0);
+                            onItemSelected(listing.getId());
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
