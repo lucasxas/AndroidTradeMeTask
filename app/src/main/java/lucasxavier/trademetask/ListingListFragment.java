@@ -35,7 +35,6 @@ public class ListingListFragment extends Fragment {
     private Callbacks mCallbacks = sDummyCallbacks;
 
     private List<Listing> listingList;
-    private RecyclerView recyclerView;
     private ListingViewAdapter adapter;
 
     /**
@@ -73,7 +72,7 @@ public class ListingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_listing_list, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         int itemsPerLine = 2;
         final GridLayoutManager manager = new GridLayoutManager(getActivity(), itemsPerLine);
         recyclerView.setLayoutManager(manager);
