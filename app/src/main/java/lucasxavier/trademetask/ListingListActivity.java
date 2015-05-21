@@ -88,14 +88,10 @@ public class ListingListActivity extends FragmentActivity
 
                         ListingListFragment fragment = new ListingListFragment();
                         fragment.setListingList(listings);
+                        fragment.setTwoPane(mTwoPane);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.listing_list_container, fragment)
                                 .commit();
-
-                        if (mTwoPane && listings.size() > 0) {
-                            Listing listing = listings.get(0);
-                            onItemSelected(listing.getId());
-                        }
 
                     }
                 },

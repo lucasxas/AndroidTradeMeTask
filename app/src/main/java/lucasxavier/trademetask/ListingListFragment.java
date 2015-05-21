@@ -36,6 +36,11 @@ public class ListingListFragment extends Fragment {
 
     private List<Listing> listingList;
     private ListingViewAdapter adapter;
+    private boolean twoPane;
+
+    public void setTwoPane(boolean twoPane) {
+        this.twoPane = twoPane;
+    }
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -87,16 +92,28 @@ public class ListingListFragment extends Fragment {
                     Listing listing = listingList.get(pos);
 
                     mCallbacks.onItemSelected(listing.getId());
-                    adapter.setSelectedItem(pos);
-                    adapter.notifyDataSetChanged();
+                    if (twoPane) {
+                        adapter.setSelectedItem(pos);
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
         }));
 
         if (listingList != null) {
-            adapter = new ListingViewAdapter(listingList, 0);
+            int selectedItem = -1;
+            if (twoPane) {
+                selectedItem = 0;
+                if (listingList.size() > selectedItem) {
+                    Listing listing = listingList.get(selectedItem);
+                    mCallbacks.onItemSelected(listing.getId());
+                }
+            }
+            adapter = new ListingViewAdapter(listingList, selectedItem);
             recyclerView.setAdapter(adapter);
         }
+
+
         return view;
     }
 
