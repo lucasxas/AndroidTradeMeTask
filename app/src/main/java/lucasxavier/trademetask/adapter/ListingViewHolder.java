@@ -31,6 +31,7 @@ public class ListingViewHolder extends RecyclerView.ViewHolder {
         ImageLoader imageLoader = RequestSingleton.getInstance(context).getImageLoader();
 
         picture.setImageUrl(listing.getPictureHref(), imageLoader);
+        picture.setDefaultImageResId(R.drawable.broken_link);
         title.setText(listing.getTitle());
         price.setText(String.format("%.2f", listing.getPriceDisplay().floatValue()));
 
